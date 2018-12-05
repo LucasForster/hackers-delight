@@ -1,4 +1,4 @@
-[PDF obtainable here.](https://latexonline.cc/compile?git=https://github.com/LucasForster/hackers-delight&target=main.tex&command=pdflatex)
+[Read the PDF on GitHub Pages](https://lucasforster.github.io/hackers-delight/)
 # Hacker's Delight
 This term paper provides introductionary explanations on Henry Warren's Book "Hacker's Delight".
 

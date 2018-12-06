@@ -1,0 +1,4 @@
+# ignore generated .pdf
+# all pdf in the root folder are untracked
+# put pdf sources into a subfolder
+/*.pdf

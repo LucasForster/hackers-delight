@@ -12,20 +12,24 @@
 
 % COMMANDS
 \makeatletter
+
 \let\lstinline@original\lstinline
-\renewcommand{\lstinline}[1]{%
-    \ifmmode\text{\lstinline@original{#1}}%
-    \else\lstinline@original{#1}%
+\renewcommand{\lstinline}[1]{
+    \ifmmode\text{\lstinline@original{#1}}
+    \else\lstinline@original{#1}
     \fi}
+
 \makeatother
 
 % TITLE, AUTHOR
 \title{Hacker's Delight}
-\author{%
-Lucas Forster\thanks{\texttt{lucas.forster@rwth-aachen.de}}\\%
-~\\%
-Seminar \emph{``Crazy Ideas in Data Structures and Algorithms''}\\%
-Theoretical Computer Science, RWTH Aachen University\thanks{tcs.rwth-aachen.de}%
+\author{
+    Lucas Forster
+    \thanks{\texttt{lucas.forster@rwth-aachen.de}}\\
+    ~\\
+    Seminar \emph{``Crazy Ideas in Data Structures and Algorithms''}\\
+    Theoretical Computer Science, RWTH Aachen University
+    \thanks{\texttt{tcs.rwth-aachen.de}}
 }
 
 % DOCUMENT

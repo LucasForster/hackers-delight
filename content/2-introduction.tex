@@ -6,3 +6,22 @@ with just [...] some bitwise operations.''
 \emph{``Hacker's Delight''}, page \texttt{xiii}
 \cite{Warren:2012:HD:2462741}
 }
+
+
+\subsection*{Crazy Ideas in Data Structures and Algorithms}
+This essay is part of a seminar covering
+ideas in computer science that feature a certain ``craziness''.
+The content that will be presented here
+might however not obviously fit into that description:
+
+The underlying data structure is a bitword
+-- the simplest interpretation of binary values possible.
+Furthermore, all formulas are composed of simple logical operators,
+without any complex (e.g. recursive) nesting involved.
+
+None the less, the general principle of rejecting
+common (high-level) abstract data types like boolean-arrays
+for bitwords turns out to be a pretty crazy idea:
+Single bits aren't directly accessible (requires copying and shifting)
+and operations like increment will be used for
+purposes differentiating a lot from their intended mathematical meaning.

@@ -25,3 +25,35 @@ for bitwords turns out to be a pretty crazy idea:
 Single bits aren't directly accessible (requires copying and shifting)
 and operations like increment will be used for
 purposes differentiating a lot from their intended mathematical meaning.
+
+\subsection*{Technical Terms}
+The most common term that will be used (and has been)
+is a ``bitword'' or ``bitvector''.
+It is simply defined as a sequence of bits with fixed length
+that is indexed starting with $0$ from right to left
+(so in Figure \ref{fig:bitword} ``$\uparrow$'' refers to $x_3$).
+
+However, it is important to remeber that
+there isn't any advanced interpretation (like a numerical value) to it
+unless otherwise noted.
+This still holds true while executing operations
+which are designed for such interpretation (e.g. incrementing).
+Therefore a good way to think of a bitvector
+is a series of ``on'' (\lstinline{1}) and ``off'' (\lstinline{0}) values.
+
+\begin{figure}[h]
+\label{fig:bitword}
+\[
+x = \lstinline{1100 1011 001 }
+\underset{\uparrow}{\lstinline{1}}
+\underbrace{\lstinline{000}}
+\]
+\caption{
+A bitword \lstinline{x} (length $16$)
+with marked rightmost \lstinline{1} and trailing \lstinline{0}s
+}
+\end{figure}
+
+Terms like ``rightmost'' and ``trailing''
+keep their conventional meaning (see Figure \ref{fig:bitword})
+-- the other ones will be introduced when required.

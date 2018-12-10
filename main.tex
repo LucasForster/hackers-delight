@@ -14,13 +14,6 @@
 
 % COMMANDS
 \makeatletter
-
-\let\lstinline@original\lstinline
-\renewcommand{\lstinline}[1]{
-    \ifmmode\text{\lstinline@original{#1}}
-    \else\lstinline@original{#1}
-    \fi}
-
 \makeatother
 
 % TITLE, AUTHOR

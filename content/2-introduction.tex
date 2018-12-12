@@ -99,3 +99,38 @@ $\lstinline$x$, \lstinline$y$, \dots$ to a boolean result.
 A set of functions, which can be used to express any possible formula
 is called a \emph{complete set of logical operators}.
 Note that this is true for the set of operators in \autoref{table:logic}.
+
+In order to express elaborated formulas as code,
+\autoref{table:operators} introduces operators
+found in common languages like \emph{C}.
+It is important between do distinguish between
+two ways of applying a logical operator to a bitword:
+
+\begin{description}
+\item[byte-level:] This represents the common usage:
+The whole variable (at least one byte in size)
+represents a single boolean value.
+
+If and only if all bits are $\lstinline$0$$,
+the value is considered to be false.
+
+\item[bitwise:] This version is important for the techniques presented here.
+As the name suggests every bit of the argument is treated independently.
+
+Any operation on a variable (at least on byte in size)
+is simultaneously executed for all bits,
+with same indices being paired.
+\end{description}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|c}
+function & mathematical & \emph{C}: byte-level & \emph{C}: bitwise\\
+\hline
+$\lstinline$NOT$$ & $\lnot$ & $\lstinline$!$$ & $\lstinline$~$$\\
+$\lstinline$OR$$ & $\lor$ & $\lstinline$||$$ & $\lstinline$|$$\\
+$\lstinline$AND$$ & $\land$ & $\lstinline$&&$$ & $\lstinline$&$$\\
+\end{tabular}
+\caption{Byte-level and bitwise operators in \emph{C}}
+\label{table:operators}
+\end{table}

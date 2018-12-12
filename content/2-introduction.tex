@@ -130,3 +130,65 @@ function & mathematical & \emph{C}: byte-level & \emph{C}: bitwise\\
 \caption{Byte-level and bitwise operators in \emph{C}}
 \label{table:operators}
 \end{table}
+
+
+\subsection*{Mathematical Operators}
+In order to not only manipulate the entries of a bitword individually,
+operations that interpret the whole sequence of bits are required.
+Increment (\lstinline$INC$) and decrement (\lstinline$DEC$)
+do so by treating the variable in a mathematical sense
+and changing that value by $1$:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c}
+function & mathematical & \emph{C}\\
+\hline
+\lstinline$INC$ & $(x+1)$ & \lstinline$x+1$\\
+\lstinline$DEC$ & $(x-1)$ & \lstinline$x-1$\\
+\end{tabular}
+\caption{Two basic mathematical operators}
+\label{table:math}
+\end{table}
+
+Notice that the assigning notations \lstinline$x++$ and \lstinline$x--$
+are deliberately ignored to make the code look more like ``formula''.
+Furthermore two terms regarding these operations should be mentioned:
+\emph{Carry} (and \emph{borrow}) are the bits
+that are given to (or taken from) the next bit to the left
+when facing \lstinline$1+1$ (\lstinline$0-1$ respectively).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

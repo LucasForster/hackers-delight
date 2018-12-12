@@ -33,7 +33,7 @@ The most common term that will be used (and has been)
 is a ``bitword'' or ``bitvector''.
 It is simply defined as a sequence of bits with fixed length
 that is indexed starting with $0$ from right to left
-(so in \autoref{fig:bitword} ``$\uparrow$'' refers to $x_3$).
+(so in \autoref{table:bitword} ``$\uparrow$'' refers to $x_3$).
 
 However, it is important to remember that
 there isn't any advanced interpretation (like a numerical value) to it
@@ -43,25 +43,18 @@ which are designed for such interpretation (e.g. incrementing).
 Therefore a good way to think of a bitvector
 is a series of ``on'' (\lstinline$1$) and ``off'' (\lstinline$0$) values.
 
-% TODO using aligned, add trailing/rightmost into figure
-\begin{figure}[h]
-% TODO fix figure
-\begin{comment}
-\[
-x = \verb$1100 1011 001 $
-\underset{\uparrow}{\verb$1$}
-\underbrace{\verb$000$}
-\]
-\end{comment}
-\caption{
-A bitword \lstinline$x$ (length $16$)
-with marked rightmost \lstinline$1$ and trailing \lstinline$0$s
-}
-\label{fig:bitword}
-\end{figure}
+\begin{table}[h]
+\begin{tabular}{rcl}
+\lstinline$x = 1100 1011 001 $ & \lstinline$1$ & \lstinline$0000$\\
+\multicolumn{2}{r}{rightmost \lstinline$1$ $\uparrow$}
+& trailing \lstinline$0$s\\
+\end{tabular}
+\caption{A bitword \lstinline$x$ (length $16$)}
+\label{table:bitword}
+\end{table}
 
 Terms like ``rightmost'' and ``trailing''
-keep their conventional meaning (see \autoref{fig:bitword})
+keep their conventional meaning (see \autoref{table:bitword})
 -- the other ones will be introduced when required.
 
 

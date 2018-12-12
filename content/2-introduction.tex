@@ -44,10 +44,9 @@ Therefore a good way to think of a bitvector
 is a series of ``on'' (\lstinline$1$) and ``off'' (\lstinline$0$) values.
 
 \begin{table}[h]
-\begin{tabular}{rcl}
-\lstinline$x = 1100 1011 001 $ & \lstinline$1$ & \lstinline$0000$\\
-\multicolumn{2}{r}{rightmost \lstinline$1$ $\uparrow$}
-& trailing \lstinline$0$s\\
+\begin{tabular}{rl}
+\lstinline$x = 1100 1011 001 1$ & $\underbrace{\text{\lstinline$0000$}}$\\
+rightmost \lstinline$1$ $\uparrow$ & trailing \lstinline$0$s\\
 \end{tabular}
 \caption{A bitword \lstinline$x$ (length $16$)}
 \label{table:bitword}

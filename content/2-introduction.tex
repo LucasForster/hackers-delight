@@ -61,3 +61,42 @@ with marked rightmost \lstinline$1$ and trailing \lstinline$0$s
 Terms like ``rightmost'' and ``trailing''
 keep their conventional meaning (see \autoref{fig:bitword})
 -- the other ones will be introduced when required.
+
+
+\subsection*{Recalling Knowledge}
+The basic behind all bit manipulation is boolean logic.
+In order to mathematically express operations, the basic operators
+$\lstinline$OR$: \lor$, $\lstinline$AND$: \land$
+as well as $\lstinline$NOT$: \lnot$ will be used.
+These are interpreted in the well-known way:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c||c|c|c}
+  $\lstinline$x$$ & $\lstinline$y$$
+& $\lstinline$NOT$: \lnot \lstinline$x$$
+& $\lstinline$OR$: \lstinline$x$ \lor \lstinline$y$$
+& $\lstinline$AND$: \lstinline$x$ \land \lstinline$y$$\\
+\hline\hline
+  $\lstinline$0$$ & $\lstinline$0$$
+& $\lstinline$1$$ & $\lstinline$0$$ & $\lstinline$0$$\\
+\hline
+  $\lstinline$0$$ & $\lstinline$1$$
+& $\lstinline$1$$ & $\lstinline$1$$ & $\lstinline$0$$\\
+\hline
+  $\lstinline$1$$ & $\lstinline$0$$
+& $\lstinline$0$$ & $\lstinline$1$$ & $\lstinline$0$$\\
+\hline
+  $\lstinline$1$$ & $\lstinline$1$$
+& $\lstinline$0$$ & $\lstinline$1$$ & $\lstinline$1$$\\
+\end{tabular}
+\caption{Three basic boolean operators}
+\label{table:logic}
+\end{table}
+
+Every formula composed of any boolean operators maps
+all possible configurations of input variables
+$\lstinline$x$, \lstinline$y$, \dots$ to a boolean result.
+A set of functions, which can be used to express any possible formula
+is called a \emph{complete set of logical operators}.
+Note that this is true for the set of operators in \autoref{table:logic}.

@@ -33,3 +33,96 @@ while the other bits are untouched and therefore keep their value.
 Since all bits up to the rightmost \lstinline$1$ are \lstinline$0$ anyways,
 the resulting formula effectively only turns off the rightmost \lstinline$1$
 in \lstinline$x$.
+
+
+\subsection*{Combining Two Operators}
+The already developed formula
+consisting of \lstinline$DEC$ and \lstinline$AND$
+is presented in \autoref{table:dec-and}.
+Notice that there is additionally a ``zero-testing'' field:
+Since every power of two is a single \lstinline$1$-bit in a bitword,
+the check tests if the input \lstinline$x$ is a power of $2$ (or $0$).
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\lstinline$DEC$:
+& invert all bits up to the rightmost \lstinline$1$\\
+\lstinline$AND$:
+& for each \lstinline$0$ in \lstinline$DEC x$,
+    turn off the corresponding bit in \lstinline$x$\\
+\lstinline$x AND (DEC x)$:
+& \fbox{turn off the rightmost \lstinline$1$ in \lstinline$x$}\\
+\lstinline$!(x&(x-1))$
+& zero-testing: ``is \lstinline$x$ $0$ or a power of $2$?''\\
+\end{tabular}
+\caption{The formula build out of \lstinline$DEC$ and \lstinline$AND$}
+\label{table:dec-and}
+\end{table}
+
+By switching the two operators for their counterparts
+\lstinline$INC$ and \lstinline$OR$,
+the meaning of the formula gets switched as well, see \autoref{table:inc-or}.
+Notice that there isn't any purpose in zero-checking the result however.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\lstinline$INC$:
+& invert all bits up to the rightmost \lstinline$0$\\
+\lstinline$OR$:
+& for each \lstinline$1$ in \lstinline$INC x$,
+    turn on the corresponding bit in \lstinline$x$\\
+\lstinline$x OR (INC x)$:
+& \fbox{turn on the rightmost \lstinline$0$ in \lstinline$x$}\\
+\end{tabular}
+\caption{The formula build out of \lstinline$INC$ and \lstinline$OR$}
+\label{table:inc-or}
+\end{table}
+
+Using the defined sets of operators, two other combinations are possible,
+which handle multiple (trailing) bits instead of a single (rightmost) one.
+As already seen with when using \lstinline$AND$, zero checks are useful.
+In the case of \lstinline$INC$ and \lstinline$AND$,
+it tests if the value was of the form $0^*1^*$
+-- in mathematical terms $2^m-1$ with $m \in [0,n]$
+(for a bitword of length $n$).
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\lstinline$INC$:
+& invert all bits up to the rightmost \lstinline$0$\\
+\lstinline$AND$:
+& for each \lstinline$0$ in \lstinline$INC x$,
+    turn off the corresponding bit in \lstinline$x$\\
+\lstinline$x AND (INC x)$:
+& \fbox{turn off the trailing \lstinline$1$ in \lstinline$x$}\\
+\lstinline$!(x&(x+1))$
+& zero-testing: is $x = 0^*1^*$ i.e. $x = 2^m-1, m \in [0,n]$.
+\end{tabular}
+\caption{The formula build out of \lstinline$INC$ and \lstinline$AND$}
+\label{table:inc-and}
+\end{table}
+
+Again switching the two operators
+for their counterparts \lstinline$DEC$ and \lstinline$OR$
+leads to the meaning of the formula getting switched as well,
+see \autoref{table:dec-or}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\lstinline$DEC$:
+& invert all bits up to the rightmost \lstinline$1$\\
+\lstinline$OR$:
+& for each \lstinline$1$ in \lstinline$DEC x$,
+    turn on the corresponding bit in \lstinline$x$\\
+\lstinline$x OR (DEC x)$:
+& \fbox{turn on the trailing \lstinline$0$ in \lstinline$x$}\\
+\end{tabular}
+\caption{The formula build out of \lstinline$DEC$ and \lstinline$OR$}
+\label{table:dec-or}
+\end{table}
+
+% TODO: add preliminary result (kept out in regard to document length)

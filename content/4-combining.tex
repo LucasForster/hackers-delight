@@ -1,2 +1,18 @@
 \section{Combining Operators}\label{sec:combining}
 % TODO: Add epigraph (if fitting quote exists)
+
+
+\subsection*{Motivation}
+In \autoref{sec:introduction} two types of operators where introduced
+with their visual interpretation presented in \autoref{sec:rightmost}:
+Operators that manipulate bits independently
+(\lstinline$OR$, \lstinline$AND$)
+as well as operators that chain through multiple bits of the argument
+(\lstinline$INC$, \lstinline$DEC$).
+\lstinline$NOT$ will be left out for the moment.
+
+Working a single bitwords \lstinline$x$, we can
+manipulate \lstinline$x$ with \lstinline$INC$, \lstinline$DEC$
+and can combine the result with the original argument
+to add or remove certain bits of \lstinline$x$
+using \lstinline$OR$, \lstinline$AND$.

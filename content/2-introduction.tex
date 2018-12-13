@@ -43,7 +43,7 @@ which are designed for such interpretation (e.g. incrementing).
 Therefore a good way to think of a bitvector
 is a series of ``on'' (\lstinline$1$) and ``off'' (\lstinline$0$) values.
 
-\begin{table}[h]
+\begin{table}[H]
 \begin{tabular}{rl}
 \lstinline$x = 1100 1011 001 $ &
 $\underset{\text{rightmost \lstinline$1$}}{\text{\lstinline$1$}}
@@ -65,7 +65,7 @@ In order to mathematically express operations, the basic operators
 as well as \lstinline$AND$: $\land$ will be used.
 These are interpreted in the well-known way:
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \begin{tabular}{c|c||c|c|c}
   \lstinline$x$ & \lstinline$y$
@@ -118,7 +118,7 @@ is simultaneously executed for all bits,
 with same indices of arguments being paired.
 \end{description}
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \begin{tabular}{c|c|c|c}
 function & mathematical & \emph{C}: byte-level & \emph{C}: bitwise\\
@@ -139,7 +139,7 @@ Increment (\lstinline$INC$) and decrement (\lstinline$DEC$)
 do so by treating the variable in a mathematical sense
 and changing that value by $1$:
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \begin{tabular}{c|c|c}
 function & mathematical & \emph{C}\\

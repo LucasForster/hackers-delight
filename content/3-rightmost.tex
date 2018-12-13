@@ -40,6 +40,7 @@ until the first \lstinline$0$-bit is found.
 \begin{tabular}{rl}
 mathematical:
 & $x \mapsto (x+1) \text{ mod } 2^n$ (unsigned)\\
+~\\
 step by step:
 & \hspace{4ex}$\text{\lstinline$0110 011$}
     \underset{\uparrow}{\text{\lstinline$1$}}$\\
@@ -50,6 +51,7 @@ step by step:
 & \hspace{4ex}$\dots$\\
 & \hspace{4ex}$\text{\lstinline$0110\ $}
     \underset{\uparrow}{\text{\lstinline$1$}}\text{\lstinline$000$}$\\
+~\\
 visual:
 & \fbox{invert all bits up to the rightmost \lstinline$0$}\\
 & \hspace{4ex}$\text{\lstinline$0110\ $}
@@ -57,5 +59,5 @@ visual:
 & \hspace{4ex}\lstinline$0110 1000$
 \end{tabular}
 \caption{Visual interpretation of the \lstinline$INC$ operator}
-\label{table:INC}
+\label{table:idea}
 \end{table}

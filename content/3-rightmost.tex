@@ -16,3 +16,46 @@ More concretely, the book starts out in chapter 2 with a list of formulas.
 While it is possible to understand why they work as they do,
 it is a completely different task to create these by yourself
 -- this needs a systematic approach.
+
+
+\subsection*{Idea}
+Exchanging the known mathematical meaning of any known operator
+for a more \emph{visual approach} will allow to develop
+a basic understanding of bit manipulation.
+Consider the \lstinline$INC$ operator as an example:
+
+Similar to performing addition by hand,
+start at the least significant bit.
+Add \lstinline$1$ to it:
+If it was \lstinline$0$, it becomes \lstinline$1$
+and the incrementation is done.
+If however the value was already \lstinline$1$, it becomes \lstinline$0$
+and the overflow is carried over to the next bit,
+where the process is repeated.
+So starting from the right, every bit gets inverted
+until the first \lstinline$0$-bit is found.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rl}
+mathematical:
+& $x \mapsto (x+1) \text{ mod } 2^n$ (unsigned)\\
+step by step:
+& \hspace{4ex}$\text{\lstinline$0110 011$}
+    \underset{\uparrow}{\text{\lstinline$1$}}$\\
+& 1) add \lstinline$1$ to the least significant bit\\
+& \hspace{4ex}$\text{\lstinline$0110 01$}
+    \underset{\uparrow}{\text{\lstinline$1$}}\text{\lstinline$0$}$\\
+& 2) while carrying, repeat with next higher bit\\
+& \hspace{4ex}$\dots$\\
+& \hspace{4ex}$\text{\lstinline$0110\ $}
+    \underset{\uparrow}{\text{\lstinline$1$}}\text{\lstinline$000$}$\\
+visual:
+& \fbox{invert all bits up to the rightmost \lstinline$0$}\\
+& \hspace{4ex}$\text{\lstinline$0110\ $}
+    \underbrace{\text{\lstinline$0111$}}_{\text{invert}}$\\
+& \hspace{4ex}\lstinline$0110 1000$
+\end{tabular}
+\caption{Visual interpretation of the \lstinline$INC$ operator}
+\label{table:INC}
+\end{table}

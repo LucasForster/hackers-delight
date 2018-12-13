@@ -21,3 +21,15 @@ manipulate \lstinline$x$ with \lstinline$INC$, \lstinline$DEC$
 and can combine the result with the original argument
 to add or remove certain bits of \lstinline$x$
 using \lstinline$OR$, \lstinline$AND$.
+
+Taking a look at the visual interpretation
+of \lstinline$DEC$ as well as \lstinline$AND$ from \autoref{table:visual},
+the combination of these two in the form \lstinline$x AND (DEC x)$
+inverts all bits up to the rightmost \lstinline$1$
+and turns off every bit in \lstinline$x$ that hasn't been inverted:
+
+Inverting means that one argument of \lstinline$AND$ is always \lstinline$0$
+while the other bits are untouched and therefore keep their value.
+Since all bits up to the rightmost \lstinline$1$ are \lstinline$0$ anyways,
+the resulting formula effectively only turns off the rightmost \lstinline$1$
+in \lstinline$x$.

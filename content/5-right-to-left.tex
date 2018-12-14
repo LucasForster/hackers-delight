@@ -1,1 +1,97 @@
 \section{Right to Left Computability Class}\label{sec:right-to-left}
+After having developed
+formulas modifying rightmost bits in \autoref{sec:combining},
+the option arises to classify these kind of formulas.
+\emph{Hacker's Delight} \cite{Warren:2012:HD:2462741}
+therefore introduces the so called ``right to left computability class''.
+Every formula in this class shares the property,
+that each result bit only depends on input bits
+at its position or to the right of it (see \autoref{table:property}).
+
+\begin{table}[H]
+\centering
+\begin{tabular}{rrl}
+\lstinline$x$: & \lstinline$x$$_n\ \ \dots$
+    & \fbox{\lstinline$x$$_i$ \lstinline$x$$_{i-1} \dots$\lstinline$x$$_0$}\\
+\lstinline$y$: & \lstinline$y$$_n\ \ \dots$
+    & \fbox{\lstinline$y$$_i$ \lstinline$y$$_{i-1} \dots$\lstinline$y$$_0$}\\
+result \lstinline$r$: & \lstinline$x$$_n\ \ \dots$
+    & \fbox{\lstinline$r$$_i$}\lstinline$ r$$_{i-}\dots$\lstinline$r$$_{i-1}$\\
+~\\
+\multicolumn{3}{c}{\fbox{\lstinline$r$$_i$ only depends on
+    \lstinline$x$$_i \dots$\lstinline$x$$_0$ and
+    \lstinline$y$$_i \dots$\lstinline$y$$_0$}}\\
+\end{tabular}
+\caption{Right-to-left computability property}
+\label{table:property}
+\end{table}
+
+Notice that, as it is common for a lot of operators,
+the result bit \lstinline$r$$_i$ is allowed to depend on
+\lstinline$r$$_{i-1}\dots$\lstinline$r$$_0$.
+This is already given since
+every of these result bits to the right of \lstinline$r$$_i$
+only depend on bits of \lstinline$x$ and \lstinline$y$.
+
+Before defining the class,
+the previously used set of operators will get slightly modified:
+\lstinline$INC$ and \lstinline$DEC$
+get exchanged for \lstinline$ADD$ and \lstinline$SUB$.
+This will allow for more flexibility while not using
+more powerful operations: they can simply be expressed with loops.
+The instruction set is therefore:
+\[
+    \text{\lstinline$NOT$},
+    \underbrace{\text{\lstinline$ADD$, \lstinline$SUB$}}
+    _{\text{\lstinline$INC$, \lstinline$DEC$}},
+    \text{\lstinline$AND$},
+    \text{\lstinline$OR$}
+\]
+
+It should also be mentioned, that this selection is a rational choice.
+Smaller sets would also be possible,
+and there are other right to left computable operators
+-- they can be combined from the selected ones
+(e.g.~shifting left as a sequence of \lstinline$ADD$s).
+
+\begin{quote}
+``THEOREM. A function mapping words to words can be implemented
+with world-parallel \emph{add}, \emph{subtract}, \emph{or} and \emph{not}
+instructions if and only if each bit of the result
+depends only on bits at and to the right of each input operand.''
+\par\hfill ``\emph{Hacker's Delight}'',
+page \texttt{12} \cite{Warren:2012:HD:2462741}
+\end{quote}
+
+\begin{proof}~
+\begin{description}
+\item[``$\implies$'':]
+In \autoref{sec:rightmost} \lstinline$INC$ and \lstinline$DEC$
+where established as right to left operations.
+This then also applies to \lstinline$ADD$ and \lstinline$SUB$.
+Regarding \lstinline$NOT$, \lstinline$AND$, \lstinline$OR$,
+they clearly fulfil the right to left computability property,
+since their result bits do not on any adjacent ones at all.
+
+Thereby a formula using only
+\lstinline$ADD$, \lstinline$SUB$, \lstinline$AND$,
+\lstinline$OR$ and \lstinline$NOT$
+only depends on bits at and to the right of each input operand.
+
+\item[``$\impliedby$'':]
+The result only depends on bits at and to the right of each input operand.
+These can be isolated using \lstinline$AND$ with the argument and a mask
+(a constant containing a single \lstinline$1$ at the respective position).
+
+Once every required bit is isolated, the function can be expressed
+using only \lstinline$NOT$, \lstinline$OR$ and \lstinline$AND$.
+This is true because (as mentioned in \autoref{sec:introduction})
+$\{\lnot, \lor, \land\}$ is a complete set of logical operators,
+every logical function can be expressed using only its elements.
+\end{description}
+\end{proof}
+
+The obtained class contains all functions
+that can calculate the $n$th result bit
+with only knowing the input operands up to their $n$th bit.
+This has applications e.g. in bitstreams when working on partial data.

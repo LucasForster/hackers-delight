@@ -1,5 +1,4 @@
-% TODO: rename section and subsections
-\section{Manipulating Rightmost Bits}\label{sec:rightmost}
+\section{A Visual Approach to Operations}\label{sec:rightmost}
 \epigraph{
 ``The fact that the carry chain allows a single bit
 to affect all the bits to its left
@@ -9,190 +8,76 @@ makes addition a peculiarly powerful data manipulation operation''
 \cite{Warren:2012:HD:2462741}
 }
 
-
-\subsection*{Motivation}
 As mentioned in \autoref{sec:book},
-the goal is to complement \emph{Hacker's Delight}.
-More concretely, the book starts out in chapter 2 with a list of formulas.
+the goal is to complement \emph{Hacker's Delight}:
+chapter 2 of the book simply lists formulas.
 While it is possible to understand why they work as they do,
-it is a completely different task to create these by yourself
+it is a completely different task to create these on your own
 -- this needs a systematic approach.
 
-
-\subsection*{Idea}
-Exchanging the known mathematical meaning of any known operator
-for a more \emph{visual approach} will allow to develop
-a basic understanding of bit manipulation.
+In order to develop the interpretations described by Henry Warren,
+a \emph{visual approach} to operations has to be obtained first.
 Consider the \lstinline$INC$ operator as an example:
-
 Similar to performing addition by hand,
-start at the least significant bit.
-Add \lstinline$1$ to it:
-If it was \lstinline$0$, it becomes \lstinline$1$
-and the incrementation is done.
-If however the value was already \lstinline$1$, it becomes \lstinline$0$
-and the overflow is carried over to the next bit,
-where the process is repeated.
+the value \lstinline$1$ gets added onto the least significant bit.
+In the case of performing \lstinline$1+1$,
+the overflow gets carried over to the next bit.
+
+This repeats until the first \lstinline$0$ is reached.
 So starting from the right, every bit gets inverted
 until the first \lstinline$0$-bit is found.
+This latter description is considered
+the visual interpretation of \lstinline$INC$.
+\lstinline$DEC$ follows an analog pattern
+to the presented \lstinline$INC$ operator.
+This allows for the visual interpretations
+shown in \autoref{table:inc} and \autoref{table:dec}.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{rl}
-mathematical:
-& $x \mapsto (x+1) \text{ mod } 2^n$ (unsigned)\\
-~\\
-step by step:
-& \hspace{4ex}$\text{\lstinline$0110 011$}
-    \underset{\uparrow}{\text{\lstinline$1$}}$\\
-& 1) add \lstinline$1$ to the least significant bit\\
-& \hspace{4ex}$\text{\lstinline$0110 01$}
-    \underset{\uparrow}{\text{\lstinline$1$}}\text{\lstinline$0$}$\\
-& 2) while carrying, repeat with next higher bit\\
-& \hspace{4ex}$\dots$\\
-& \hspace{4ex}$\text{\lstinline$0110\ $}
-    \underset{\uparrow}{\text{\lstinline$1$}}\text{\lstinline$000$}$\\
-~\\
-visual:
-& \fbox{invert all bits up to the rightmost \lstinline$0$}\\
-& \hspace{4ex}$\text{\lstinline$0110\ $}
-    \underbrace{\text{\lstinline$0111$}}_{\text{invert}}$\\
-& \hspace{4ex}\lstinline$0110 1000$
+\begin{tabular}{r|ccc}
+\lstinline$x$ & left of rightmost \lstinline$0$
+    & rightmost \lstinline$0$ & trailings \lstinline$1$s\\
+\hline
+\lstinline$(x+1)$ & unchanged & \lstinline$1$ & \lstinline$0...0$\\
+& \multicolumn{3}{c}{
+    \fbox{invert all bits up to the rightmost \lstinline$0$}}
 \end{tabular}
-\caption{Visual interpretation of the \lstinline$INC$ operator}
-\label{table:idea-inc}
-\end{table}
-
-
-\subsection*{Visual Approach}
-The last section gave a detailed insight
-on how the \lstinline$INC$ operator is visually interpretable.
-The counterpart \lstinline$DEC$ follows an analog pattern,
-therefore an overview should suffice to introduce it.
-But first, in order to have all operators presented in the following schema,
-the \lstinline$INC$ operator will be repeated in \autoref{table:inc}.
-
-\begin{table}[H]
-\centering
-\begin{tabular}{ll}
-\lstinline$INC$: & example:\\
-1) add \lstinline$1$ to the least significant bit
-& $\text{\lstinline$0110 011$}\underset{\uparrow}{\text{\lstinline$1$}}$\\
-2) while carrying, repeat with next higher bit
-& $\text{\lstinline$0110 01$}
-    \underset{\uparrow}{\text{\lstinline$1$}}\text{\lstinline$0$}$\\
-& \lstinline$0110 1000$\\
-\fbox{invert all bits up to the rightmost \lstinline$0$}
-& $\text{\lstinline$0110\ $}
-    \underbrace{\text{\lstinline$0111$}}_{\text{invert}}$\\
-& \lstinline$0110 1000$
-\end{tabular}
-\caption{The \lstinline$INC$ operator}
+\caption{\lstinline$INC$ (visual interpretation)}
 \label{table:inc}
 \end{table}
 
 \begin{table}[H]
 \centering
-\begin{tabular}{ll}
-\lstinline$DEC$: & example:\\
-1) remove \lstinline$1$ to the least significant bit
-& $\text{\lstinline$0110 100$}\underset{\uparrow}{\text{\lstinline$0$}}$\\
-2) while carrying, repeat with next higher bit
-& $\text{\lstinline$0110 10$}
-    \underset{\uparrow}{\text{\lstinline$0$}}\text{\lstinline$1$}$\\
-& \lstinline$0110 0111$\\
-\fbox{invert all bits up to the rightmost \lstinline$1$}
-& $\text{\lstinline$0110\ $}
-    \underbrace{\text{\lstinline$1000$}}_{\text{invert}}$\\
-& \lstinline$0110 0111$
+\begin{tabular}{r|ccc}
+\lstinline$x$ & left of rightmost \lstinline$1$
+    & rightmost \lstinline$1$ & trailings \lstinline$0$s\\
+\hline
+\lstinline$(x-1)$ & unchanged & \lstinline$0$ & \lstinline$1...1$\\
+& \multicolumn{3}{c}{
+    \fbox{invert all bits up to the rightmost \lstinline$1$}}
 \end{tabular}
-\caption{The \lstinline$DEC$ operator}
+\caption{\lstinline$DEC$ (visual interpretation)}
 \label{table:dec}
 \end{table}
 
-In \autoref{sec:introduction} logical operators where introduced
-along the mathematical ones that have just been covered.
-The bitwise version will be of interest,
-with the \lstinline$NOT$ operator being trivial
-regarding the visual interpretation.
+After the now covered mathematical operators from
+\autoref{sec:introduction},
+the bitwise logical operators are of interest.
+\lstinline$NOT$ is the trivial one to visually interpret,
+because it simply inverts all bits of a given bitword.
 
-Left with \lstinline$OR$ as well as \lstinline$AND$,
-the approach will be to minimise the effort of determining the result
-by only looking at certain bits of the first argument
-and ``modifying'' the second argument to become the result.
+Regarding \lstinline$OR$ and \lstinline$AND$,
+the approach is to reduce the original definition of calculating
+\lstinline$r$$_i$\lstinline$ = x$$_i \lor$\lstinline$y$$_i$ and
+\lstinline$r$$_i$\lstinline$ = x$$_i \land$\lstinline$y$$_i$ respectively
+for each bit $i$.
 
-\begin{table}[H]
-\centering
-\begin{tabular}{ll}
-\lstinline$OR$: & example:\\
-& \lstinline$x = 0011$\\
-& \lstinline$y = 0101$\\
-for each resulting bit, determine
-$\text{\lstinline$r$}_i = \text{\lstinline$x$}_i \lor \text{\lstinline$y$}_i$
-& \lstinline$r = 0111$\\
-~\\
-& $\text{\lstinline$y = 0$}\underset{\downarrow}{\text{\lstinline$1$}}
-    \text{\lstinline$0$}\underset{\downarrow}{\text{\lstinline$1$}}$\\
-\fbox{for each \lstinline$1$ in \lstinline$y$,
-turn on the corresponding bit in \lstinline$x$}
-& \lstinline$x = 0011$\\
-& \lstinline$r = 0111$\\
-\end{tabular}
-\caption{The \lstinline$OR$ operator}
-\label{table:or}
-\end{table}
-
-\begin{table}[H]
-\centering
-\begin{tabular}{ll}
-\lstinline$AND$: & example:\\
-& \lstinline$x = 1100$\\
-& \lstinline$y = 1010$\\
-for each resulting bit, determine
-$\text{\lstinline$r$}_i = \text{\lstinline$x$}_i \land \text{\lstinline$y$}_i$
-& \lstinline$r = 1000$\\
-~\\
-& $\text{\lstinline$y = 1$}\underset{\downarrow}{\text{\lstinline$0$}}
-    \text{\lstinline$1$}\underset{\downarrow}{\text{\lstinline$0$}}$\\
-\fbox{for each \lstinline$0$ in \lstinline$y$,
-turn off the corresponding bit in \lstinline$x$}
-& \lstinline$x = 1100$\\
-& \lstinline$r = 1000$\\
-\end{tabular}
-\caption{The \lstinline$AND$ operator}
-\label{table:and}
-\end{table}
-
-Notice that there was made a specific choice
-in \autoref{table:or} and \autoref{table:and}
-to let the second argument \lstinline$y$
-manipulate the first argument \lstinline$x$
-instead of the other way round.
-This will enhance readability in formulas
-presented in \autoref{sec:combining}.
-
-In summary the visual interpretations of operators
-(including the skipped \lstinline$NOT$ operator)
-presented in \autoref{table:visual} are obtained.
-
-\begin{table}[H]
-\centering
-\begin{tabular}{cc|l}
-Operator & & Visual Interpretation\\
-\hline
-\lstinline$NOT$ & \lstinline$~x$
-    & invert all bits\\
-\lstinline$INC$ & \lstinline$x+1$
-    & invert all bits up to the rightmost \lstinline$0$\\
-\lstinline$DEC$ & \lstinline$x-1$
-    & invert all bits up to the rightmost \lstinline$1$\\
-\lstinline$OR$  & \lstinline$x|y$
-    & for each \lstinline$1$ in \lstinline$y$,
-        turn on the corresponding bit in \lstinline$x$\\
-\lstinline$AND$ & \lstinline$x&y$
-    & for each \lstinline$0$ in \lstinline$y$,
-        turn off the corresponding bit in \lstinline$x$\\
-\end{tabular}
-\caption{Summary of visual interpretations of selected operators}
-\label{table:visual}
-\end{table}
+Instead, one might think of the second argument
+manipulating the first one to become the result:
+Set \lstinline$r$ to \lstinline$x$, then
+for every \lstinline$1$ in \lstinline$y$
+set the corresponding bit in \lstinline$r$ to \lstinline$1$.
+Set to \lstinline$0$ for every \lstinline$0$ in \lstinline$y$
+when executing \lstinline$AND$.
+This is summarised in \autoref{table:or} and \autoref{table:and}.

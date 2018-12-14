@@ -19,13 +19,16 @@ an encyclopedia of formulas for bit level manipulation:
 It starts out with detecting, counting and changing
 specific bits in a bitword.
 From there on, everything imaginable seems to be part of this collection.
-This includes bit-level manipulations that result
+This also includes bit-level manipulations that result
 in a mathematical meaning (interpreting the bitword as a number).
 
 The bypassing of common algebraic steps
 to achieve performance gains is the typical example
 of what should be considered a ``hack''.
-
+Concretely, like the book this paper exploits
+bit-level parallelism of instructions
+(e.g.~a~logical function is calculated for all bits of a bitword
+at the same time).
 
 \subsection*{The Book's Title}
 As addressed in the epigraph, ``hacker'' refers to
@@ -40,13 +43,9 @@ Inspired by and named after \emph{Hacker's Delight},
 this paper complements it with explanations
 that have been left out by the author (intentionally):
 
-\begin{quote}
 ``The presentation is informal.
 Proofs are given only when the algorithm is not obvious,
-and sometimes not even then.''
-\par\hfill \emph{Hacker's Delight},
-page \texttt{xv} \cite{Warren:2012:HD:2462741}
-\end{quote}
+and sometimes not even then.'' \cite{Warren:2012:HD:2462741}
 
 Instead of simply explaining given formulas,
 this essay assembles them from a few elementary operations

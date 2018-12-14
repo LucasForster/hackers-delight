@@ -126,3 +126,107 @@ see \autoref{table:dec-or}.
 \end{table}
 
 % TODO: add preliminary result (kept out in regard to document length)
+
+\subsection*{Combining Three Operators}
+
+The operator \lstinline$NOT$ has been kept out for a simple reason:
+It's combination with another operator would have produced
+familiar functions like \lstinline$NOR$ and \lstinline$NAND$
+or at least trivial ones like inverting
+everything left of the rightmost \lstinline$0$ or \lstinline$1$ respectively.
+
+With the four above introduced formulas however, new possibilities arise:
+% TODO add WHY for 1/2
+\begin{enumerate}
+\item invert the full formula:\\
+    \lstinline$~(x&(x-1))$, \lstinline$~(x|(x+1))$,
+    \lstinline$~(x&(x+1))$, \lstinline$~(x|(x-1))$\\
+    this swaps on/off up to the rightmost \lstinline$0$/\lstinline$1$
+    and inverts the left section
+\item invert the incremented/decrement argument:\\
+    \lstinline$x&(~(x-1))$, \lstinline$x|(~(x+1))$,
+    \lstinline$x&(~(x+1))$, \lstinline$x|(~(x-1))$\\
+    this turns on/off the section
+    left from the rightmost \lstinline$0$/\lstinline$1$
+\item invert the original argument:\\
+    \lstinline$(~x)&(x-1)$, \lstinline$(~x)|(x+1)$,
+    \lstinline$(~x)&(x+1)$, \lstinline$(~x)&(x-1)$\\
+\end{enumerate}
+
+While the first two options deliver foreseeable results,
+the inverting of the unchanged argument is the most complex
+and promising option.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{r|ccc}
+\lstinline$x$ & left of rightmost \lstinline$0$
+    & rightmost \lstinline$0$ & trailings \lstinline$1$s\\
+\hline
+\lstinline$(~x)$ & inverted & \lstinline$1$ & \lstinline$0...0$\\
+\lstinline$(x+1)$ & unchanged & \lstinline$1$ & \lstinline$0...0$\\
+\lstinline$(~x)&(x+1)$ & \lstinline$0...0$
+    & \lstinline$1$ & \lstinline$0...0$\\
+& \multicolumn{3}{c}{
+    \fbox{a single \lstinline$1$ at the rightmost \lstinline$0$}}
+\end{tabular}
+\caption{\lstinline$(NOT x) AND (INC x)$}
+\label{table:not-inc-and}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{r|ccc}
+\lstinline$x$ & left of rightmost \lstinline$1$
+    & rightmost \lstinline$1$ & trailings \lstinline$0$s\\
+\hline
+\lstinline$(~x)$ & inverted & \lstinline$1$ & \lstinline$0...0$\\
+\lstinline$(x-1)$ & unchanged & \lstinline$0$ & \lstinline$1...1$\\
+\lstinline$(~x)|(x-1)$ & \lstinline$1...1$
+    & \lstinline$0$ & \lstinline$1...1$\\
+& \multicolumn{3}{c}{
+    \fbox{a single \lstinline$0$ at the rightmost \lstinline$1$}}\\
+\end{tabular}
+\caption{\lstinline$(NOT x) OR (DEC x)$}
+\label{table:not-dec-or}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{r|ccc}
+\lstinline$x$ & left of rightmost \lstinline$1$
+    & rightmost \lstinline$1$ & trailings \lstinline$0$s\\
+\hline
+\lstinline$(~x)$ & inverted & \lstinline$1$ & \lstinline$1...1$\\
+\lstinline$(x-1)$ & unchanged & \lstinline$0$ & \lstinline$1...1$\\
+\lstinline$(~x)&(x-1)$ & \lstinline$0...0$
+    & \lstinline$0$ & \lstinline$1...1$\\
+& \multicolumn{3}{c}{
+    \fbox{\lstinline$1$s at trailing \lstinline$0$s}}\\
+\end{tabular}
+\caption{\lstinline$(NOT x) AND (DEC x)$}
+\label{table:not-dec-and}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{r|ccc}
+\lstinline$x$ & left of rightmost \lstinline$0$
+    & rightmost \lstinline$0$ & trailings \lstinline$1$s\\
+\hline
+\lstinline$(~x)$ & inverted & \lstinline$1$ & \lstinline$1...1$\\
+\lstinline$(x+1)$ & unchanged & \lstinline$1$ & \lstinline$0...0$\\
+\lstinline$(~x)|(x+1)$ & \lstinline$1...1$
+    & \lstinline$1$ & \lstinline$0...0$\\
+& \multicolumn{3}{c}{
+    \fbox{\lstinline$0$s at trailing \lstinline$1$s}}\\
+\end{tabular}
+\caption{\lstinline$(NOT x) OR (INC x)$}
+\label{table:not-inc-or}
+\end{table}
+
+Additionally, every formula can be inverted in total.
+This is especially useful when the result is ``a single \lstinline$0$''
+like for \lstinline$(NOT x) OR (DEC x)$ (see \autoref{table:not-dec-or}).
+The result then has the same scheme as \lstinline$(NOT x) AND (INC x)$
+(see \autoref{table:not-inc-and}).

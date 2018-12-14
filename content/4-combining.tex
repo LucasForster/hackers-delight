@@ -57,7 +57,7 @@ the check tests if the input \lstinline$x$ is a power of $2$ (or $0$).
 \lstinline$!(x&(x-1))$
 & zero-testing: ``is \lstinline$x$ $0$ or a power of $2$?''\\
 \end{tabular}
-\caption{The formula build out of \lstinline$DEC$ and \lstinline$AND$}
+\caption{\lstinline$x AND (DEC x)$}
 \label{table:dec-and}
 \end{table}
 
@@ -77,7 +77,7 @@ Notice that there isn't any purpose in zero-checking the result however.
 \lstinline$x OR (INC x)$:
 & \fbox{turn on the rightmost \lstinline$0$ in \lstinline$x$}\\
 \end{tabular}
-\caption{The formula build out of \lstinline$INC$ and \lstinline$OR$}
+\caption{\lstinline$x OR (INC x)$}
 \label{table:inc-or}
 \end{table}
 
@@ -102,7 +102,7 @@ it tests if the value was of the form $0^*1^*$
 \lstinline$!(x&(x+1))$
 & zero-testing: is $x = 0^*1^*$ i.e. $x = 2^m-1, m \in [0,n]$.
 \end{tabular}
-\caption{The formula build out of \lstinline$INC$ and \lstinline$AND$}
+\caption{\lstinline$x AND (INC x)$}
 \label{table:inc-and}
 \end{table}
 
@@ -122,7 +122,7 @@ see \autoref{table:dec-or}.
 \lstinline$x OR (DEC x)$:
 & \fbox{turn on the trailing \lstinline$0$ in \lstinline$x$}\\
 \end{tabular}
-\caption{The formula build out of \lstinline$DEC$ and \lstinline$OR$}
+\caption{\lstinline$x OR (DEC x)$             }
 \label{table:dec-or}
 \end{table}
 

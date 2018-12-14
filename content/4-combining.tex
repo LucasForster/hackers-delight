@@ -2,60 +2,53 @@
 % TODO: Add epigraph (if fitting quote exists)
 % TODO: Move zero-testing out of the current document part
 
-\subsection*{Motivation}
-In \autoref{sec:introduction} two types of operators where introduced
-with their visual interpretation presented in \autoref{sec:rightmost}:
-Operators that manipulate bits independently
-(\lstinline$OR$, \lstinline$AND$)
-as well as operators that chain through multiple bits of the argument
-(\lstinline$INC$, \lstinline$DEC$).
+Two types of operators have been introduced
+in \autoref{sec:introduction}:
+
+\begin{itemize}
+\item Operators that manipulate bits independently in parallel:
+    \lstinline$OR$, \lstinline$AND$
+\item Operators that chain through multiple bits of the argument:
+    \lstinline$INC$, \lstinline$DEC$
+\end{itemize}
 
 Combining pairs from these two sets will allow
 to create more complex formulas.
-\lstinline$NOT$ will be left aside for the moment.
+\lstinline$NOT$ (part of the first group) is left out,
+since it would simply invert the result
+and thereby not contributing to interesting results.
+It will be useful as a third operator later on.
 
 
-\subsection*{Idea}
+\subsection*{Combining two operators}
 Working a single bitwords \lstinline$x$, we can
 manipulate \lstinline$x$ with \lstinline$INC$, \lstinline$DEC$
 and can combine the result with the original argument
 to add or remove certain bits of \lstinline$x$
 using \lstinline$OR$, \lstinline$AND$.
 
-Taking a look at the visual interpretation
-of \lstinline$DEC$ as well as \lstinline$AND$
-in \autoref{table:dec} and \autoref{table:and},
-the combination of these two in the form \lstinline$x AND (DEC x)$
+\lstinline$x AND (DEC x)$ for example
 inverts all bits up to the rightmost \lstinline$1$
-and turns off every bit in \lstinline$x$ that hasn't been inverted:
+and then turns off every bit in \lstinline$x$ that hasn't been inverted.
+This means every bit up to the rightmost \lstinline$1$ has been turned off.
+This is equivalent to turning off the rightmost \lstinline$1$
+(on the right are only trailing \lstinline$0$s anyway).
 
-Inverting means that one argument of \lstinline$AND$ is always \lstinline$0$
-while the other bits are untouched and therefore keep their value.
-Since all bits up to the rightmost \lstinline$1$ are \lstinline$0$ anyways,
-the resulting formula effectively only turns off the rightmost \lstinline$1$
-in \lstinline$x$.
-
-
-\subsection*{Combining Two Operators}
-The already developed formula
-consisting of \lstinline$DEC$ and \lstinline$AND$
-is presented in \autoref{table:dec-and}.
-Notice that there is additionally a ``zero-testing'' field:
-Since every power of two is a single \lstinline$1$-bit in a bitword,
-the check tests if the input \lstinline$x$ is a power of $2$ (or $0$).
+Other combinations follow a similar pattern as demonstrated in
+\autoref{table:dec-and}, \autoref{table:inc-or},
+\autoref{table:inc-and} and \autoref{table:dec-or}.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{ll}
-\lstinline$DEC$:
-& invert all bits up to the rightmost \lstinline$1$\\
-\lstinline$AND$:
-& for each \lstinline$0$ in \lstinline$DEC x$,
-    turn off the corresponding bit in \lstinline$x$\\
-\lstinline$x AND (DEC x)$:
-& \fbox{turn off the rightmost \lstinline$1$ in \lstinline$x$}\\
-\lstinline$!(x&(x-1))$
-& zero-testing: ``is \lstinline$x$ $0$ or a power of $2$?''\\
+\begin{tabular}{r|ccc}
+\lstinline$x$ & left of rightmost \lstinline$1$
+    & rightmost \lstinline$1$ & trailing \lstinline$0$s\\
+\hline
+\lstinline$(x-1)$ & unchanged & \lstinline$0$ & \lstinline$1...1$\\
+\lstinline$x&(x-1)$ & unchanged
+    & \lstinline$0$ & unchanged\\
+& \multicolumn{3}{c}{
+    \fbox{turn off the rightmost \lstinline$1$}}
 \end{tabular}
 \caption{\lstinline$x AND (DEC x)$}
 \label{table:dec-and}
@@ -63,19 +56,19 @@ the check tests if the input \lstinline$x$ is a power of $2$ (or $0$).
 
 By switching the two operators for their counterparts
 \lstinline$INC$ and \lstinline$OR$,
-the meaning of the formula gets switched as well, see \autoref{table:inc-or}.
-Notice that there isn't any purpose in zero-checking the result however.
+the meaning of the formula gets switched as well.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{ll}
-\lstinline$INC$:
-& invert all bits up to the rightmost \lstinline$0$\\
-\lstinline$OR$:
-& for each \lstinline$1$ in \lstinline$INC x$,
-    turn on the corresponding bit in \lstinline$x$\\
-\lstinline$x OR (INC x)$:
-& \fbox{turn on the rightmost \lstinline$0$ in \lstinline$x$}\\
+\begin{tabular}{r|ccc}
+\lstinline$x$ & left of rightmost \lstinline$0$
+    & rightmost \lstinline$0$ & trailing \lstinline$1$s\\
+\hline
+\lstinline$(x+1)$ & unchanged & \lstinline$1$ & \lstinline$0...0$\\
+\lstinline$x|(x+1)$ & unchanged
+    & \lstinline$1$ & unchanged\\
+& \multicolumn{3}{c}{
+    \fbox{turn on the rightmost \lstinline$0$}}
 \end{tabular}
 \caption{\lstinline$x OR (INC x)$}
 \label{table:inc-or}
@@ -83,24 +76,18 @@ Notice that there isn't any purpose in zero-checking the result however.
 
 Using the defined sets of operators, two other combinations are possible,
 which handle multiple (trailing) bits instead of a single (rightmost) one.
-As already seen with when using \lstinline$AND$, zero checks are useful.
-In the case of \lstinline$INC$ and \lstinline$AND$,
-it tests if the value was of the form $0^*1^*$
--- in mathematical terms $2^m-1$ with $m \in [0,n]$
-(for a bitword of length $n$).
 
 \begin{table}[H]
 \centering
-\begin{tabular}{ll}
-\lstinline$INC$:
-& invert all bits up to the rightmost \lstinline$0$\\
-\lstinline$AND$:
-& for each \lstinline$0$ in \lstinline$INC x$,
-    turn off the corresponding bit in \lstinline$x$\\
-\lstinline$x AND (INC x)$:
-& \fbox{turn off the trailing \lstinline$1$ in \lstinline$x$}\\
-\lstinline$!(x&(x+1))$
-& zero-testing: is $x = 0^*1^*$ i.e. $x = 2^m-1, m \in [0,n]$.
+\begin{tabular}{r|ccc}
+\lstinline$x$ & left of rightmost \lstinline$0$
+    & rightmost \lstinline$0$ & trailing \lstinline$1$s\\
+\hline
+\lstinline$(x+1)$ & unchanged & \lstinline$1$ & \lstinline$0...0$\\
+\lstinline$x&(x+1)$ & unchanged
+    & unchanged & \lstinline$0...0$\\
+& \multicolumn{3}{c}{
+    \fbox{turn off trailing \lstinline$0$s}}
 \end{tabular}
 \caption{\lstinline$x AND (INC x)$}
 \label{table:inc-and}
@@ -108,34 +95,39 @@ it tests if the value was of the form $0^*1^*$
 
 Again switching the two operators
 for their counterparts \lstinline$DEC$ and \lstinline$OR$
-leads to the meaning of the formula getting switched as well,
-see \autoref{table:dec-or}.
+leads to the meaning of the formula getting switched as well.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{ll}
-\lstinline$DEC$:
-& invert all bits up to the rightmost \lstinline$1$\\
-\lstinline$OR$:
-& for each \lstinline$1$ in \lstinline$DEC x$,
-    turn on the corresponding bit in \lstinline$x$\\
-\lstinline$x OR (DEC x)$:
-& \fbox{turn on the trailing \lstinline$0$ in \lstinline$x$}\\
+\begin{tabular}{r|ccc}
+\lstinline$x$ & left of rightmost \lstinline$1$
+    & rightmost \lstinline$1$ & trailing \lstinline$0$s\\
+\hline
+\lstinline$(x-1)$ & unchanged & \lstinline$0$ & \lstinline$1...1$\\
+\lstinline$x|(x-1)$ & unchanged
+    & unchanged & \lstinline$1...1$\\
+& \multicolumn{3}{c}{
+    \fbox{turn on trailing \lstinline$0$s}}
 \end{tabular}
-\caption{\lstinline$x OR (DEC x)$             }
+\caption{\lstinline$x OR (DEC x)$}
 \label{table:dec-or}
 \end{table}
 
-% TODO: add preliminary result (kept out in regard to document length)
+\subsubsection*{Zero-Testing}
+The two formulas build with \lstinline$AND$ turn off bits.
+Therefore their result can be zero-tested (in a meaningful way):
+\begin{itemize}
+\item \lstinline$x AND (DEC x)$:\\
+    \lstinline$!(x&(x-1))$$\equiv$``is \lstinline$x$ $0$ or a power of $2$''
+\item \lstinline$x AND (INC x)$:\\
+    \lstinline$!(x&(x+1))$$\equiv$``is \lstinline$x$ $2^m - 1, m \in [0,n]$''
+    (for a bitword of length $n$)
+\end{itemize}
+
 
 \subsection*{Combining Three Operators}
 
-The operator \lstinline$NOT$ has been kept out for a simple reason:
-It's combination with another operator would have produced
-familiar functions like \lstinline$NOR$ and \lstinline$NAND$
-or at least trivial ones like inverting
-everything left of the rightmost \lstinline$0$ or \lstinline$1$ respectively.
-
+\lstinline$NOT$ has been left out at the beginning.
 With the four above introduced formulas however, new possibilities arise:
 % TODO add WHY for 1/2
 \begin{enumerate}
@@ -162,7 +154,7 @@ and promising option.
 \centering
 \begin{tabular}{r|ccc}
 \lstinline$x$ & left of rightmost \lstinline$0$
-    & rightmost \lstinline$0$ & trailings \lstinline$1$s\\
+    & rightmost \lstinline$0$ & trailing \lstinline$1$s\\
 \hline
 \lstinline$(~x)$ & inverted & \lstinline$1$ & \lstinline$0...0$\\
 \lstinline$(x+1)$ & unchanged & \lstinline$1$ & \lstinline$0...0$\\
@@ -179,7 +171,7 @@ and promising option.
 \centering
 \begin{tabular}{r|ccc}
 \lstinline$x$ & left of rightmost \lstinline$1$
-    & rightmost \lstinline$1$ & trailings \lstinline$0$s\\
+    & rightmost \lstinline$1$ & trailing \lstinline$0$s\\
 \hline
 \lstinline$(~x)$ & inverted & \lstinline$1$ & \lstinline$0...0$\\
 \lstinline$(x-1)$ & unchanged & \lstinline$0$ & \lstinline$1...1$\\
@@ -196,7 +188,7 @@ and promising option.
 \centering
 \begin{tabular}{r|ccc}
 \lstinline$x$ & left of rightmost \lstinline$1$
-    & rightmost \lstinline$1$ & trailings \lstinline$0$s\\
+    & rightmost \lstinline$1$ & trailing \lstinline$0$s\\
 \hline
 \lstinline$(~x)$ & inverted & \lstinline$1$ & \lstinline$1...1$\\
 \lstinline$(x-1)$ & unchanged & \lstinline$0$ & \lstinline$1...1$\\
@@ -213,7 +205,7 @@ and promising option.
 \centering
 \begin{tabular}{r|ccc}
 \lstinline$x$ & left of rightmost \lstinline$0$
-    & rightmost \lstinline$0$ & trailings \lstinline$1$s\\
+    & rightmost \lstinline$0$ & trailing \lstinline$1$s\\
 \hline
 \lstinline$(~x)$ & inverted & \lstinline$1$ & \lstinline$1...1$\\
 \lstinline$(x+1)$ & unchanged & \lstinline$1$ & \lstinline$0...0$\\

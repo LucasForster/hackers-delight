@@ -81,3 +81,39 @@ set the corresponding bit in \lstinline$r$ to \lstinline$1$.
 Set to \lstinline$0$ for every \lstinline$0$ in \lstinline$y$
 when executing \lstinline$AND$.
 This is summarised in \autoref{table:or} and \autoref{table:and}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{r|cc}
+\lstinline$y$ & bits that are \lstinline$0$
+    & bits that are \lstinline$1$\\
+\hline
+\lstinline$(x|y)$ & \lstinline$x$ (unchanged) & \lstinline$1$\\
+& \multicolumn{2}{c}{\fbox{for each \lstinline$1$ in \lstinline$y$,
+    set to \lstinline$1$ in \lstinline$x$}}
+\end{tabular}
+\caption{\lstinline$OR$ (visual interpretation)}
+\label{table:or}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{r|cc}
+\lstinline$y$ & bits that are \lstinline$0$
+    & bits that are \lstinline$1$\\
+\hline
+\lstinline$(x&y)$ & \lstinline$0$ & \lstinline$x$ (unchanged)\\
+& \multicolumn{2}{c}{\fbox{for each \lstinline$0$ in \lstinline$y$,
+    set to \lstinline$0$ in \lstinline$x$}}
+\end{tabular}
+\caption{\lstinline$AND$ (visual interpretation)}
+\label{table:and}
+\end{table}
+
+Notice that there was made a specific choice
+in \autoref{table:or} and \autoref{table:and}
+to let the second argument \lstinline$y$
+manipulate the first argument \lstinline$x$
+instead of the other way round.
+This will enhance readability in formulas
+presented in \autoref{sec:combining}.

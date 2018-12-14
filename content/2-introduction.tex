@@ -8,62 +8,59 @@ with just [...] some bitwise operations.''
 }
 
 
-% TODO crazy fast instruction level parallelism
 \subsection*{Crazy Ideas in Data Structures and Algorithms}
-This essay is part of a seminar covering
-ideas in computer science that feature a certain ``craziness''.
-The content that will be presented here
-might however not obviously fit into that description:
+The seminar this contribution is part of covers
+ideas in computer science with a certain ``craziness''.
+This might not obviously apply to this paper:
 
 The underlying data structure is a bitword
 -- the simplest interpretation of binary values possible.
 Furthermore, all formulas are composed of simple logical operators,
 without any complex (e.g. recursive) nesting involved.
 
-None the less, the general principle of rejecting
-common (high-level) abstract data types like boolean-arrays
-for bitwords turns out to be a pretty crazy idea:
-Single bits aren't directly accessible (requires copying and shifting)
-and operations like increment will be used for
-purposes differentiating a lot from their intended mathematical meaning.
+Where the ``craziness'' starts however,
+is in the rejection of abstract data types (like boolean-arrays).
+Addressing single bits isn't directly possible.
+Instead ``hacks'' will be used that involve decoupling
+operations (e.g. increment) from their mathematical meaning
+(see \autoref{sec:rightmost}).
+Additionally, instruction-level parallelism will allow for
+``crazy'' fast computation: everything fitting in a bitword
+is processed by the CPU in a single time step.
 
 
 \subsection*{Bitwords}
-The most common term that will be used (and has been)
-is a ``bitword'' or ``bitvector''.
+The common term \emph{bitword} (or \emph{bitvector}).
 It is simply defined as a sequence of bits with fixed length
-that is indexed starting with $0$ from right to left
-(so in \autoref{table:bitword} ``$\uparrow$'' refers to $x_3$).
+that is indexed (starting with $0$) from right to left
+(e.g. in \autoref{table:bitword} ``$\uparrow$'' refers to $x_4$).
+There isn't any further interpretation (e.g. as a numerical value) to it.
+This holds true when applying operations with such a meaning
+(e.g. incrementing).
 
-However, it is important to remember that
-there isn't any advanced interpretation (like a numerical value) to it
-unless otherwise noted.
-This still holds true while executing operations
-which are designed for such interpretation (e.g. incrementing).
-Therefore a good way to think of a bitvector
-is a series of ``on'' (\lstinline$1$) and ``off'' (\lstinline$0$) values.
+A good way to think of a bitvector is a series of
+\emph{on} (\lstinline$1$) and \emph{off} (\lstinline$0$) values.
+Terms like ``rightmost'' and ``trailing''
+are used in their conventional meaning (see \autoref{table:bitword})
+-- others will be introduced when needed.
 
 \begin{table}[H]
-\begin{tabular}{rl}
-\lstinline$x = 1100 1011 001 $ &
-$\underset{\text{rightmost \lstinline$1$}}{\text{\lstinline$1$}}
+\centering
+\begin{tabular}{r}
+$\underset{\text{\hfill rightmost \lstinline$1$}}
+{\text{\lstinline$x = 1100 1011 001$}
+{\underset{\uparrow}{\text{\lstinline$1$}}}}
 \underbrace{\text{\lstinline$0000$}}_{\text{trailing \lstinline$0$s}}$\\
 \end{tabular}
-\caption{A bitword \lstinline$x$ (length $16$)}
+\caption{Bitword}
 \label{table:bitword}
 \end{table}
 
-Terms like ``rightmost'' and ``trailing''
-keep their conventional meaning (see \autoref{table:bitword})
--- the other ones will be introduced when required.
-
 
 \subsection*{Logical Operators}
-The basic behind all bit manipulation is boolean logic.
-In order to mathematically express operations, the basic operators
-\lstinline$NOT$: $\lnot$, \lstinline$OR$: $\lor$,
-as well as \lstinline$AND$: $\land$ will be used.
-These are interpreted in the well-known way.
+The mathematical logical operators serve as a basis
+for all bit manipulation.
+They are interpreted in the well-known way (see \autoref{table:logic}).
 
 \begin{table}[H]
 \centering
@@ -85,37 +82,27 @@ These are interpreted in the well-known way.
   \lstinline$1$ & \lstinline$1$
 & \lstinline$0$ & \lstinline$1$ & \lstinline$1$\\
 \end{tabular}
-\caption{Three basic boolean operators}
+\caption{Basic boolean operators}
 \label{table:logic}
 \end{table}
 
-Every formula composed of boolean operators maps
-each configuration of input variables
-\lstinline$x$, \lstinline$y$, $\dots$ to a boolean result.
-A set of operators, which can be used to express any possible formula
-is called a \emph{complete set of logical operators}.
-Note that this is true for the set of operators in \autoref{table:logic}.
-
-In order to express elaborated formulas as code,
-\autoref{table:operators} introduces operators
-found in common languages like \emph{C}.
-It is important between do distinguish between
-two ways of applying a logical operator to a bitword:
+The set $\{\lnot, \lor, \land\}$ presented in \autoref{table:logic}
+is considered a \emph{complete set of logical operators},
+which means that any logical formula can be expressed
+only using elements from this set.
+There is an important distinction to be made
+on how to apply a logical operator to a bitword
+(see \autoref{table:operators} for \emph{C}):
 
 \begin{description}
-\item[byte-level:] This represents the common usage:
-The whole variable (at least one byte in size)
-represents a single boolean value.
+\item[byte-level:] This common interpretation
+defines the whole variable (at least 1 byte in size)
+as a single boolean value being false iff all bits are \lstinline$0$.
 
-If and only if all bits are \lstinline$0$,
-the value is considered to be false.
-
-\item[bitwise:] This version is important for the techniques presented here.
+\item[bitwise:] This lesser used version
+is made for bit-level manipulation.
 As the name suggests every bit of the argument is treated independently.
 
-Any operation on a variable (at least on byte in size)
-is simultaneously executed for all bits,
-with same indices of arguments being paired.
 \end{description}
 
 \begin{table}[H]
@@ -133,27 +120,14 @@ function & mathematical & \emph{C}: byte-level & \emph{C}: bitwise\\
 
 
 \subsection*{Mathematical Operators}
-In order to not only manipulate the entries of a bitword individually,
-operations that interpret the whole sequence of bits are required.
-Increment (\lstinline$INC$) and decrement (\lstinline$DEC$)
-do so by treating the variable in a mathematical sense
-and changing that value by $1$:
+In addition to manipulating bits independently,
+operators that interpret sequence as a whole a required.
+Increment (\lstinline$INC$, \lstinline$(x+1)$ in \emph{C})
+and decrement (\lstinline$DEC$, \lstinline$(x-1)$ in \emph{C})
+do so by treating the bitwords in a mathematical sense.
+The assigning notations \lstinline$x++$ and \lstinline$x--$
+are ignored to avoid side effects.
 
-\begin{table}[H]
-\centering
-\begin{tabular}{c|c|c}
-function & mathematical & \emph{C}\\
-\hline
-\lstinline$INC$ & $(x+1)$ & \lstinline$x+1$\\
-\lstinline$DEC$ & $(x-1)$ & \lstinline$x-1$\\
-\end{tabular}
-\caption{Two basic mathematical operators}
-\label{table:math}
-\end{table}
-
-Notice that the assigning notations \lstinline$x++$ and \lstinline$x--$
-are deliberately ignored to make the code look more like a ``formula''.
-Furthermore two terms regarding these operations should be mentioned:
-\emph{Carry} (and \emph{borrow}) are the bits
-that are given to (or taken from) the next bit to the left
-when facing \lstinline$1+1$ (\lstinline$0-1$ respectively).
+When executing these operation, \emph{carry} and \emph{borrow}
+refer to the values that get passed to adjacent bits
+(see \autoref{sec:rightmost}).

@@ -128,19 +128,23 @@ Therefore their result can be zero-tested (in a meaningful way):
 \subsection*{Combining Three Operators}
 
 \lstinline$NOT$ has been left out at the beginning.
-With the four above introduced formulas however, new possibilities arise:
+With the four above introduced formulas however, new possibilities arise.
+There are three options to use the negation on them:
 % TODO add WHY for 1/2
 \begin{enumerate}
 \item invert the full formula:\\
     \lstinline$~(x&(x-1))$, \lstinline$~(x|(x+1))$,
     \lstinline$~(x&(x+1))$, \lstinline$~(x|(x-1))$\\
-    this swaps on/off up to the rightmost \lstinline$0$/\lstinline$1$
-    and inverts the left section
+    this just inverts the original result,
+    meaning that:\\
+    up to the rightmost \lstinline$0$/\lstinline$1$
+    the turning on/off gets swapped\\
+    and additionally the left part is inverted
 \item invert the incremented/decrement argument:\\
     \lstinline$x&(~(x-1))$, \lstinline$x|(~(x+1))$,
     \lstinline$x&(~(x+1))$, \lstinline$x|(~(x-1))$\\
-    this turns on/off the section
-    left from the rightmost \lstinline$0$/\lstinline$1$
+    this simply turns on/off the section
+    left of the rightmost \lstinline$0$/\lstinline$1$
 \item invert the original argument:\\
     \lstinline$(~x)&(x-1)$, \lstinline$(~x)|(x+1)$,
     \lstinline$(~x)&(x+1)$, \lstinline$(~x)&(x-1)$\\
@@ -148,7 +152,9 @@ With the four above introduced formulas however, new possibilities arise:
 
 While the first two options deliver foreseeable results,
 the inverting of the unchanged argument is the most complex
-and promising option.
+and promising option, as demonstrated in
+\autoref{table:not-inc-and}, \autoref{table:not-dec-or},
+\autoref{table:not-dec-and} and \autoref{table:not-inc-or}.
 
 \begin{table}[H]
 \centering
@@ -218,8 +224,8 @@ and promising option.
 \label{table:not-inc-or}
 \end{table}
 
+\subsubsection*{Inverting}
 Additionally, every formula can be inverted in total.
 This is especially useful when the result is ``a single \lstinline$0$''
-like for \lstinline$(NOT x) OR (DEC x)$ (see \autoref{table:not-dec-or}).
-The result then has the same scheme as \lstinline$(NOT x) AND (INC x)$
-(see \autoref{table:not-inc-and}).
+like for \lstinline$(NOT x) OR (DEC x)$.
+The result then has the same scheme as \lstinline$(NOT x) AND (INC x)$.

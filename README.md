@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.com/LucasForster/hackers-delight.svg)](https://travis-ci.com/LucasForster/hackers-delight)
+
 [Read the PDF on GitHub Pages](https://lucasforster.github.io/hackers-delight/)
 # Hacker's Delight
 This term paper provides introductionary explanations on Henry Warren's Book "Hacker's Delight".

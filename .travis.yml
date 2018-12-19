@@ -11,6 +11,7 @@ after_success: |
   if [ -n "$GITHUB_API_KEY" ]; then
     cd "$TRAVIS_BUILD_DIR"
     git init
+    git fetch
     git checkout artifacts
     git add .
     git -c user.name='travis' -c user.email='travis' commit -m init

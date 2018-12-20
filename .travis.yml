@@ -10,13 +10,11 @@ script:
 after_success: |
   if [ -n "$GITHUB_API_KEY" ]; then
     cd "$TRAVIS_BUILD_DIR"
-    ls
-    git clone https://github.com/LucasForster/hackers-delight/ "$TRAVIS_BUILD_DIR"
-    cd hackers-delight
+    git clone https://github.com/LucasForster/hackers-delight/ artifacts
+    cd artifacts
     git checkout artifacts
     rm -rf
     mv ../hackers-delight.pdf .
-    ls
     git add .
     git -c user.name='travis' -c user.email='travis' commit -m init
     # Make sure to make the output quiet, or else the API token will leak!

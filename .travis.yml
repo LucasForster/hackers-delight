@@ -2,22 +2,20 @@ sudo: required
 language: generic
 services: docker
 
+git:
+  quiet: true
+
 script:
-  # We use the docker image from https://hub.docker.com/r/dxjoke/tectonic-docker/
+  # Docker image from https://hub.docker.com/r/dxjoke/tectonic-docker/
   # Compiling only main.tex:
   - docker run --mount src=$TRAVIS_BUILD_DIR,target=/usr/src/tex,type=bind dxjoke/tectonic-docker /bin/sh -c "tectonic hackers-delight.tex"
-    
-after_success: |
-  if [ -n "$GITHUB_API_KEY" ]; then
-    cd "$TRAVIS_BUILD_DIR"
-    git clone https://github.com/LucasForster/hackers-delight/ artifacts
-    cd artifacts
-    git checkout artifacts
-    rm -rf
-    mv ../hackers-delight.pdf .
-    git add .
-    git -c user.name='travis' -c user.email='travis' commit -m init
-    # Make sure to make the output quiet, or else the API token will leak!
-    # This works because the API key can replace your password.
-    git push -f -q https://LucasForster:$GITHUB_API_KEY@github.com/LucasForster/hackers-delight-artifacts artifacts &>/dev/null
-  fi
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_API_KEY
+  # Keep older versions
+  keep-history: true
+  # Only publish master
+  on:
+    branch: master

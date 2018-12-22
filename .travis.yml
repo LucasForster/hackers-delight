@@ -1,21 +1,32 @@
 sudo: required
-language: generic
-services: docker
 
-git:
-  quiet: true
+language: generic
+
+env:
+  global:
+    - TRAVIS_REPO_NAME=${TRAVIS_REPO_SLUG#*/}
+
+services:
+  - docker
+
+before_install:
+  - docker pull dxjoke/tectonic-docker
 
 script:
-  # Docker image from https://hub.docker.com/r/dxjoke/tectonic-docker/
-  # Compiling only main.tex:
-  - docker run --mount src=$TRAVIS_BUILD_DIR,target=/usr/src/tex,type=bind dxjoke/tectonic-docker /bin/sh -c "tectonic hackers-delight.tex"
+  - docker run "tectonic $TRAVIS_REPO_NAME.tex"
+  # Move typesetted document
+  - mkdir $TRAVIS_BUILD_ID
+  - mv $TRAVIS_REPO_NAME.tex $TRAVIS_BUILD_ID
 
 deploy:
   provider: pages
   skip-cleanup: true
-  github-token: $GITHUB_API_KEY
+  github-token: $GITHUB_TOKEN
   # Keep older versions
   keep-history: true
   # Only publish master
   on:
     branch: master
+  # Only push files moved earlier
+  localdir: $TRAVIS_BUILD_ID
+

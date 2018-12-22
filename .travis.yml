@@ -13,10 +13,10 @@ before_install:
   - docker pull dxjoke/tectonic-docker
 
 script:
-  - docker run "tectonic $TRAVIS_REPO_NAME.tex"
+  - docker run tectonic "$TRAVIS_REPO_NAME".tex
   # Move typesetted document
   - mkdir $TRAVIS_BUILD_ID
-  - mv $TRAVIS_REPO_NAME.tex $TRAVIS_BUILD_ID
+  - mv "$TRAVIS_REPO_NAME".pdf $TRAVIS_BUILD_ID
 
 deploy:
   provider: pages

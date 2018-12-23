@@ -2,28 +2,18 @@ sudo: required
 
 language: generic
 
-env:
-  global:
-    - TRAVIS_REPO_NAME=${TRAVIS_REPO_SLUG#*/}
-
 services:
   - docker
 
-before_install:
+install:
   - docker pull dxjoke/tectonic-docker
 
 script:
-  # run tectonic
-  - docker run --mount src=$TRAVIS_BUILD_DIR,target=/usr/src/tex,type=bind dxjoke/tectonic-docker /bin/sh -c "tectonic $TRAVIS_REPO_NAME.tex"
-  # overwrite files
-  - docker run /bin/sh -c "mv -f /gh-pages/* ."
+  - docker run --mount src=$TRAVIS_BUILD_DIR,target=/usr/src/tex,type=bind dxjoke/tectonic-docker /bin/sh -c "tectonic hackers-delight.tex"
+  - cp hackers-delight.pdf gh-pages/hackers-delight.pdf
 
 deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
-  # Keep older versions to browse
-  keep-history: true
-  # Only publish master
-  on:
-    branch: master
+  local-dir: gh-pages

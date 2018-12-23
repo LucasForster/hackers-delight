@@ -1,6 +1,0 @@
-# ignore everything...
-*
-# except typesetted document
-!/hackers-delight.pdf
-# except site
-!/index.html

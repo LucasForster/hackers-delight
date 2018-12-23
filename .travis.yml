@@ -14,19 +14,13 @@ before_install:
 
 script:
   - docker run tectonic "$TRAVIS_REPO_NAME".tex
-  # Move typesetted document
-  - mkdir $TRAVIS_BUILD_ID
-  - mv "$TRAVIS_REPO_NAME".pdf $TRAVIS_BUILD_ID
 
 deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
-  # Keep older versions
+  # Keep older versions to browse
   keep-history: true
   # Only publish master
   on:
     branch: master
-  # Only push files moved earlier
-  localdir: $TRAVIS_BUILD_ID
-

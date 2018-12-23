@@ -13,6 +13,9 @@ before_install:
   - docker pull dxjoke/tectonic-docker
 
 script:
+  # overwrite files
+  - mv -rf /gh-pages/* .
+  # run tectonic
   - docker run --mount src=$TRAVIS_BUILD_DIR,target=/usr/src/tex,type=bind dxjoke/tectonic-docker /bin/sh -c "tectonic $TRAVIS_REPO_NAME.tex"
 
 deploy:

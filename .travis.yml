@@ -15,6 +15,6 @@ script:
 deploy:
   provider: pages
   skip-cleanup: true
-  github-token: $GH_TOKEN
-  local-dir: gh-pages
+  github-token: $GITHUB_TOKEN
   keep-history: true
+  local-dir: gh-pages

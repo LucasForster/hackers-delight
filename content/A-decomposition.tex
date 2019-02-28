@@ -1,0 +1,60 @@
+\section{Exponentiation by Binary Decomposition}\label{sec:decomposition}
+This section covers the computation of $x^n$ for a nonnegative integer $n$
+as in section \texttt{11-3} of \emph{Hackers's Delight}
+\cite{Warren:2012:HD:2462741} (p. \texttt{288}).
+The base $x$ can be of any type
+with an associative operation $\cdot$ defined on it.
+Therefore the method presented here
+is not only applicable to multiplication on integers and floating points,
+but also i.e.\ concatenation of strings
+($(\text{'ab'})^3 = \text{'ababab'}$).
+
+The goal is to reduce the number of required operations
+with the most primitive approach taking $(n-1)$ steps.
+Whatever the operation may be,
+it will be referred to as ``multiplication'' below.
+
+Using the identities $x^{(a+b)} = x^a \cdot x^b$
+and $(x^a)^b = x^{(a \cdot b)}$,
+a decomposition of the exponent $n$ can be achieved
+and thereby the number of required multiplications is reduced up to a minimum.
+Consider these examples\footnote{
+Henry Warren \cite{Warren:2012:HD:2462741} mentions $x^{15} = (x^3)^5$
+which requires 6 (one more) multiplications.
+The decomposition shown here was selected as a replacement to demonstrate that
+simply chaining prime factors isn't necessarily the optimal solution.
+}:
+\[ x^{15} = x^3 \cdot ((x^3)^2)^2 \hspace{4ex} x^{27} = ((x^3)^3)^3 \]
+
+\begin{quotation}\noindent
+``Perhaps surprisingly, there is no known simple method that, for all $n$,
+finds the optimal sequence of multiplications to compute $x^n$.
+The only known methods involve an extensive search.''\\
+\phantom{a} \hfill -- Hacker's Delight
+\cite{Warren:2012:HD:2462741} (p. \texttt{289})
+\end{quotation}
+
+This circumstance leads to the question, which decomposition
+is simple to obtain and a relatively good approximation of the optimum.
+The binary representation of $n$ is cheap
+when already operating in a low level coding environment.
+Consider the same examples as before:
+\[ x^{15} = x^8 \cdot x^4 \cdot x^2 \cdot x \hspace{4ex}
+x^{27} = x^{16} \cdot x^8 \cdot x^2 \cdot x \]
+
+In comparison, binary decomposition takes
+for $n := 15$ a total of $6$ ($\log_2 8 + 3$)
+instead of $5$ ($2 + 1 + 1 + 1$) operations
+and for $n := 27$ a total of $7$ ($\log_2 16 + 3$)
+instead of $6$ ($2 + 2 + 2$) multiplications.
+
+The algorithm for this computation\footnote{
+See \url{https://hackersdelight.org/hdcodetxt/iexp.c.txt}
+\cite{Warren:HD:Website}
+} scans the binary representation from right to left,
+by isolating the least significant bit (\lstinline$n&1$)
+and right-shifting it (\lstinline$n = n >> 1$).
+For every new bit, a factor \lstinline$p$ (that starts as $x$)
+is squared and therefore equals $x, x^2, x^4, \dots$ throughout the cycles.
+It is multiplied onto the final result \lstinline$y$ (which starts as $1$)
+if and only if the bit in that cycle is \lstinline$1$.
